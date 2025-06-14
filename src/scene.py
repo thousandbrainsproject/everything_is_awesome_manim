@@ -9,6 +9,7 @@
 """Scene explaining the everything_is_awesome project setup."""
 
 from manim import (
+    BLUE,
     DEGREES,
     GRAY,
     ORIGIN,
@@ -18,25 +19,31 @@ from manim import (
     UP,
     UR,
     WHITE,
-    Arc,
     Arrow,
     ArrowTriangleFilledTip,
+    Axes,
+    Circle,
     Create,
     Cylinder,
+    Dot,
     Dot3D,
+    DrawBorderThenFill,
     FadeIn,
     FadeOut,
     GrowArrow,
     Line,
     MoveAlongPath,
     Rotate,
+    Scene,
     Tex,
     Text,
     ThreeDAxes,
     ThreeDScene,
     VGroup,
+    Write,
     config,
     linear,
+    np,
 )
 
 
@@ -417,10 +424,6 @@ class RobotWithPlatform(ThreeDScene):  # type: ignore[misc]  # noqa: D101
 
         self.remove(translate_down)
         self.play(FadeIn(orbit_left))
-        orbit_left_arc = Arc(
-            angle=PI, radius=0.5 * unit, stroke_color=WHITE, start_angle=PI / 2
-        )
-        orbit_left_arc.rotate(-PI / 2, axis=RIGHT)
         self.play(
             Rotate(
                 dot_obj,
@@ -438,15 +441,34 @@ class RobotWithPlatform(ThreeDScene):  # type: ignore[misc]  # noqa: D101
                 rate_func=linear,
                 run_time=2,
             ),
-            Create(orbit_left_arc, run_time=2),
+            Rotate(
+                axes,
+                angle=PI,
+                axis=UP,
+                about_point=ORIGIN,
+                rate_func=linear,
+                run_time=2,
+            ),
+            Rotate(
+                x_label,
+                angle=PI,
+                axis=UP,
+                about_point=ORIGIN,
+                rate_func=linear,
+                run_time=2,
+            ),
+            Rotate(
+                z_label,
+                angle=PI,
+                axis=UP,
+                about_point=ORIGIN,
+                rate_func=linear,
+                run_time=2,
+            ),
         )
 
-        self.play(FadeOut(orbit_left), FadeOut(orbit_left_arc))
+        self.play(FadeOut(orbit_left))
         self.play(FadeIn(orbit_right))
-        orbit_right_arc = Arc(
-            angle=PI, radius=0.5 * unit, stroke_color=WHITE, start_angle=PI / 2
-        )
-        orbit_right_arc.rotate(PI / 2, axis=RIGHT)
         self.play(
             Rotate(
                 dot_obj,
@@ -464,7 +486,103 @@ class RobotWithPlatform(ThreeDScene):  # type: ignore[misc]  # noqa: D101
                 rate_func=linear,
                 run_time=2,
             ),
-            Create(orbit_right_arc, run_time=2),
+            Rotate(
+                axes,
+                angle=-PI,
+                axis=UP,
+                about_point=ORIGIN,
+                rate_func=linear,
+                run_time=2,
+            ),
+            Rotate(
+                x_label,
+                angle=-PI,
+                axis=UP,
+                about_point=ORIGIN,
+                rate_func=linear,
+                run_time=2,
+            ),
+            Rotate(
+                z_label,
+                angle=-PI,
+                axis=UP,
+                about_point=ORIGIN,
+                rate_func=linear,
+                run_time=2,
+            ),
         )
 
-        self.play(FadeOut(orbit_right), FadeOut(orbit_right_arc))
+        self.play(FadeOut(orbit_right))
+
+
+class UnitCircle(Scene):  # type: ignore[misc]  # noqa: D101
+    def construct(self) -> None:  # noqa: D102
+        axes = Axes(
+            x_range=[-2, 2, 1],
+            y_range=[-2, 2, 1],
+            x_length=config.frame_height * 0.8,
+            y_length=config.frame_height * 0.8,
+            axis_config={
+                "numbers_to_include": np.arange(-2, 3, 1),
+                "font_size": 24,
+                "tick_size": 0.1,
+                "tip_height": 0.1,
+                "tip_width": 0.1,
+            },
+        )
+        unit = axes.get_x_unit_size()
+        z_label = axes.get_x_axis_label(Tex("z"))
+        x_label = axes.get_y_axis_label(Tex("x"))
+        self.play(FadeIn(axes), FadeIn(z_label), FadeIn(x_label))
+
+        notes = Text(
+            "Looking at the robot setup\nfrom the top.",
+            font_size=24,
+        )
+        notes.to_corner(UR)
+        self.play(Write(notes))
+
+        self.wait(2)
+
+        unit_circle = Circle(radius=unit, color=WHITE, stroke_width=2)
+        unit_circle_text = Text(
+            "Consider the ZX unit circle.",
+            font_size=24,
+        )
+        unit_circle_text.to_corner(UR)
+        self.remove(notes)
+        self.play(Create(unit_circle), Write(unit_circle_text))
+
+        self.wait(2)
+
+        obj = Circle(
+            radius=0.125 * unit,
+            color=BLUE,
+            fill_color=BLUE,
+            fill_opacity=1,
+        )
+        obj_text = Text(
+            "The object is placed\nat (0, 0, 0), the origin.",
+            font_size=24,
+        )
+        obj_text.to_corner(UR)
+        self.remove(unit_circle_text)
+        self.play(DrawBorderThenFill(obj), Write(obj_text))
+
+        self.wait(2)
+
+        sensor = Dot(point=unit * RIGHT, color=WHITE)
+        sensor_dir = Arrow(
+            start=sensor.get_center(),
+            end=sensor.get_center() - 0.25 * unit * RIGHT,
+            buff=0,
+        )
+        sensor_text = Text(
+            "The sensor is located\nat (0, 0, 1).",
+            font_size=24,
+        )
+        sensor_text.to_corner(UR)
+        self.remove(obj_text)
+        self.play(FadeIn(sensor), FadeIn(sensor_dir), Write(sensor_text))
+
+        self.wait(2)
