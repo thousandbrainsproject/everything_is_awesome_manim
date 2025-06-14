@@ -13,16 +13,14 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 dependencies = [
+    "manim"
 ]
-description = "Python project template" # TODO: Update this description
+description = "Manim animation for everything_is_awesome repo"
 dynamic = ["version"]
 license = { file = "LICENSE" }
-name = "tbp.project" # TODO: Update this name
+name = "everything_is_awesome_manim"
 readme = "README.md"
-requires-python = ">=3.8, <4" # TODO: Confirm desired Python version
-
-[project.scripts] # TODO: Update with your application entrypoints, if any
-hello = "tbp.project.hello:main" # Executable via `uv run hello`
+requires-python = ">=3.13, <4"
 
 [dependency-groups]
 dev = [
@@ -30,20 +28,20 @@ dev = [
     "deptry",
 
     # Python static type checker
-    "mypy==1.11.2",
+    "mypy==1.16.0",
 
     # Testing, code style, etc...
-    "pytest==7.1.1",
-    "pytest-xdist==2.5.0",
-    "pytest-cov==3.0.0",
+    "pytest==8.4.0",
+    "pytest-xdist",
+    "pytest-cov",
 
     # Python linter and formatter
-    "ruff==0.7.1",
+    "ruff==0.11.13",
 ]
 
 [project.urls]
-Repository = "https://github.com/thousandbrainsproject/tbp.project" # TODO: Update this URL
-Issues = "https://github.com/thousandbrainsproject/tbp.project/issues" # TODO: Update this URL
+Repository = "https://github.com/thousandbrainsproject/everything_is_awesome_manim"
+Issues = "https://github.com/thousandbrainsproject/everything_is_awesome_manim/issues"
 
 [tool.coverage.run]
 branch = true
@@ -66,7 +64,9 @@ ignore = ["DEP002"]
 [tool.mypy]
 explicit_package_bases = true
 files = ["src", "tests"]
+ignore_missing_imports = true
 mypy_path = ["src", "tests"]
+strict = true
 warn_unused_configs = true
 
 [tool.pytest.ini_options]
@@ -80,7 +80,7 @@ junit_family = "xunit1"
 
 [tool.ruff]
 line-length = 88
-target-version = "py38"
+target-version = "py313"
 
 [tool.ruff.format]
 indent-style = "space"

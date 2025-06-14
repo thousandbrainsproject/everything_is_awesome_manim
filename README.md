@@ -1,39 +1,6 @@
-# Python package template
+# everything_is_awesome_manim
 
-This is a Python package template. For application use-cases like web servers, scripts, and command-line interfaces that require packaging and distribution, this template is suitable.
-
-For a Python library template, see https://github.com/thousandbrainsproject/tbp.python_library.
-
-To create a repository from this template, find and click the "Use this template" button:
-
-![Use this template](./delete_me.png)
-
-## Make it yours
-
-After copying the template, you need to address the following TODOs.
-
-### `pyproject.toml`
-
-- Update the project `description`
-- Update the project `name`
-- Confirm desired Python version in `requires-python`
-- Update any entrypoints in `[project.scripts]`
-- Update the `Repository` and `Issues` URLs
-
-### Delete template images
-
-- Delete `delete_me.png`
-- Delete `delete_me_too.png`
-
-### `README.md`
-
-- Update for your project
-
-### Recommendations
-
-For a cleaner project commit history, go to your repository settings and in the Pull Requests section, only "Allow squash merging". It also helps to set your default commit message to the "Pull request title" option.
-
-![Pull Request Settings](./delete_me_too.png)
+Manim animation for https://github.com/thousandbrainsproject/everything_is_awesome May 2025 Hackathon project.
 
 ## Development
 
